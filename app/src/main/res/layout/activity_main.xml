@@ -4,15 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WeatherActivity">
+    tools:context=".ui.WeatherActivity">
+
+
 
     <TextView
+        android:id="@+id/labelTemperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/temperature"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+       />
+
+
+
+    <TextView
+        android:id="@+id/labelCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cityname"
+        app:layout_constraintStart_toStartOf="@+id/labelTemperature"
+        app:layout_constraintBottom_toTopOf = "@+id/labelTemperature" />
+
+    <TextView
+        android:id="@+id/labelCloud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cloud"
+        app:layout_constraintStart_toStartOf="@+id/labelCity"
+        app:layout_constraintBottom_toTopOf = "@+id/labelCity"
+        android:layout_marginTop="80dp"
+        />
+
+    <TextView
+        android:id="@+id/temperatureView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginStart="40dp"
+        app:layout_constraintStart_toEndOf="@+id/labelTemperature"
+        app:layout_constraintBaseline_toBaselineOf="@+id/labelTemperature" />
+
+    <TextView
+        android:id="@+id/cityView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginStart="40dp"
+        app:layout_constraintStart_toEndOf="@+id/labelCity"
+        app:layout_constraintBaseline_toBaselineOf="@+id/labelCity"
+        />
+
+    <TextView
+        android:id="@+id/cloudValueView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginStart="40dp"
+        app:layout_constraintStart_toEndOf="@+id/labelCloud"
+        app:layout_constraintBaseline_toBaselineOf="@+id/labelCloud"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

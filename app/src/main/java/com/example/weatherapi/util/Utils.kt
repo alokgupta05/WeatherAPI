@@ -20,7 +20,7 @@ object Utils {
         val componentName = ComponentName(context, WeatherService::class.java)
         val jobInfo = JobInfo.Builder(DUMMY_ID, componentName)
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-            .setPeriodic((5 * 60).toLong())
+            .setPeriodic((2 * 60*60*100).toLong())
             .build()
 
         val jobScheduler = context.getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler

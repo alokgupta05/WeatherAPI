@@ -28,10 +28,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
-
-
     private lateinit  var model : WeatherViewModel
-
     private val TAG : String = "WeatherActivity"
     private lateinit var mLocationRequest : LocationRequest
     private lateinit var googleApiClient :  GoogleApiClient
@@ -91,12 +88,10 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
         googleApiClient.connect()
 
 
-        var builder =  LocationSettingsRequest.Builder()
-            .addLocationRequest(mLocationRequest);
+        val builder =  LocationSettingsRequest.Builder()
+            .addLocationRequest(mLocationRequest)
 
-        //**************************
-        builder.setAlwaysShow(true); //this is the key ingredient
-        //**************************
+        builder.setAlwaysShow(true)
 
         val result =
             LocationServices.getSettingsClient(this).checkLocationSettings(builder.build())
@@ -107,20 +102,15 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
             if (it is ResolvableApiException) {
                 try {
                     // Show the dialog by calling startResolutionForResult(),
-                    val resolvable = it as ResolvableApiException
-                    resolvable.startResolutionForResult(
+                    it.startResolutionForResult(
                         this@WeatherActivity,
                         REQUEST_CHECK_SETTINGS
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
                     // Ignore the error.
                 }
-
             }
-
         }
-
-
     }
 
     private fun fetchWeatherFromLocation(location : Location){

@@ -15,7 +15,9 @@ object Utils {
 
     private val DUMMY_ID = 1001
 
-
+    /**
+     * This method will schedule a weather update job with frequency of 2 hours
+     */
     fun scheduleJob(context: Context) {
         val componentName = ComponentName(context, WeatherService::class.java)
         val jobInfo = JobInfo.Builder(DUMMY_ID, componentName)

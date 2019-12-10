@@ -4,8 +4,9 @@ package com.example.weatherapi.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-
-
+/**
+ * Base View model for all view models
+ */
 open class BaseViewModel : ViewModel() {
 
     var showLoading = MutableLiveData<String>()

@@ -1,16 +1,17 @@
 package com.example.weatherapi.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.weatherapi.models.WeatherResponse
 import com.example.weatherapi.repository.WeatherRepo
 
-class WeatherViewModel(): BaseViewModel(){
-    val weatherRepo: WeatherRepo by lazy { WeatherRepo() }
+class WeatherViewModel : BaseViewModel(){
+    private val weatherRepo: WeatherRepo by lazy { WeatherRepo() }
 
-    lateinit var liveDataWeather : LiveData<WeatherResponse>
+    var liveDataWeather : MutableLiveData<WeatherResponse> = MutableLiveData()
 
     fun  fetchWeather(lat: Double, long: Double): LiveData<WeatherResponse> {
-        liveDataWeather   = weatherRepo.fetchWeather(lat, long)
+        liveDataWeather = weatherRepo.fetchWeather(lat, long) as MutableLiveData<WeatherResponse>
         return liveDataWeather
     }
 

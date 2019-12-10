@@ -23,14 +23,14 @@ class WeatherRepo {
         weatherAPI = RetrofitService.cteateService(WeatherAPI::class.java)
     }
 
-     fun fetchWeather(lat: Double, lon: Double): LiveData<WeatherResponse> {
+    fun fetchWeather(lat: Double, lon: Double): LiveData<WeatherResponse> {
         val weatherResponseMutableLiveData = MutableLiveData<WeatherResponse>()
 
         val queryPath = QueryPath(API_KEY,lat,lon)
-         if(checkInCache(lat,lon)){
-             //Applying to return the cache location
-             return Transformations.map(weatherResponseMutableLiveData, ::getFromCache)
-         }
+        if(checkInCache(lat,lon)){
+            //Applying to return the cache location
+            return Transformations.map(weatherResponseMutableLiveData, ::getFromCache)
+        }
 
         weatherAPI.getResponse("weather", queryPath.lat, queryPath.lon, queryPath.appid)
             .enqueue(object : Callback<WeatherResponse> {
@@ -63,10 +63,13 @@ class WeatherRepo {
      */
     fun checkInCache(lat: Double, lon: Double): Boolean{
 
-            var weatherResponse = AppCache.weatherResponse
-            if(weatherResponse.coord!=null && weatherResponse!!.coord!!.lat == lat && weatherResponse!!.coord!!.lon==lon){
+        val weatherResponse = AppCache.weatherResponse
+        weatherResponse.coord?.also {
+            if( it.lat == lat && it.lon==lon){
                 return true
             }
+        }
+
 
         return  false
     }

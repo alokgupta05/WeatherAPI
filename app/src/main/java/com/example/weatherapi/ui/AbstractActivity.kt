@@ -4,7 +4,10 @@ package com.example.weatherapi.ui
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weatherapi.util.CustomProgressDialog
 
-
+/**
+ * Abstract activity class which will contain common atributes and properties for all activities,
+ * All activities must extend from this activity
+ */
 open class AbstractActivity : AppCompatActivity() {
 
     var mProgressDialog: CustomProgressDialog? = null
@@ -17,7 +20,6 @@ open class AbstractActivity : AppCompatActivity() {
         hideProgressDialog()
         mProgressDialog = CustomProgressDialog(this)
         mProgressDialog!!.setCancelable(false)
-        mProgressDialog!!.setMessage(msg)
         mProgressDialog!!.show()
     }
 

@@ -56,14 +56,15 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
-    // Trigger new location updates at interval
-    protected fun startLocationUpdates() {
+    /**
+     *     Trigger new location updates at interval
+     **/
+    private fun startLocationUpdates() {
 
         // Create LocationSettingsRequest object using location request
         val builder = LocationSettingsRequest.Builder()
         builder.addLocationRequest(mLocationRequest)
         val locationSettingsRequest = builder.build()
-
         val settingsClient = LocationServices.getSettingsClient(this)
         settingsClient.checkLocationSettings(locationSettingsRequest)
 
@@ -71,6 +72,7 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
             mLocationRequest, object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
                     locationResult?.lastLocation?.also {
+                        //fetch weather using location
                         fetchWeatherFromLocation(it)
                     }
                 }
@@ -79,7 +81,9 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
         )
     }
 
-
+    /**
+       * Check if GPS is enabled or not and then show the dialog accordingly
+     **/
     private fun checkLocationSetting(){
         googleApiClient =  GoogleApiClient.Builder(this@WeatherActivity)
             .addApi(LocationServices.API)
@@ -113,34 +117,51 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
+    /**
+    fetch weather information using the location object and update UI
+     **/
     private fun fetchWeatherFromLocation(location : Location){
         AppCache.mUserCurrentLocation = location
         hideProgressDialog()
         showProgresDialog("Fetching weather")
         location.apply {  model.fetchWeather(location.latitude, location.longitude).observe(this@WeatherActivity,
             Observer<WeatherResponse> { weatherReponse ->
-                hideProgressDialog()
-                temperatureView.text = (weatherReponse.main?.temp?.minus(273.15)?.toFloat()).toString()
-                cityView.text = weatherReponse.name
-                weatherReponse.weather.apply {
-                    cloudValueView.text = weatherReponse.weather?.get(0)?.description
-                }
-                Utils.scheduleJob(this@WeatherActivity)
+                updateWeather(weatherReponse)
             }) }
-
-
     }
 
+    /**
+        Update weather information on UI
+     **/
+    private fun updateWeather(weatherReponse : WeatherResponse){
+        hideProgressDialog()
+        temperatureView.text = (weatherReponse.main?.temp?.minus(273.15)?.toFloat()).toString()
+        cityView.text = weatherReponse.name
+        weatherReponse.weather.apply {
+            cloudValueView.text = weatherReponse.weather?.get(0)?.description
+        }
+        Utils.scheduleJob(this@WeatherActivity)
+    }
+
+    /*
+    Check if permissions granted for location
+     */
     private fun checkPermissions() =
         ActivityCompat.checkSelfPermission(this,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
+    /**
+      * Start requesting for location permission
+     **/
     private fun startLocationPermissionRequest() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             REQUEST_PERMISSIONS_REQUEST_CODE)
     }
 
+    /**
+    Request permission dialog displayed
+     **/
     private fun requestPermissions() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -153,6 +174,9 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
+    /**
+     * remove location updates when user moves away from UI
+     */
     override fun onStop() {
         super.onStop()
         getFusedLocationProviderClient(this).removeLocationUpdates(LocationCallback())
@@ -193,6 +217,7 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
             }
         }
     }
+
 
     override fun onConnectionFailed(p0: ConnectionResult) {
 

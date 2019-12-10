@@ -17,21 +17,22 @@ import retrofit2.Response
 
 class WeatherRepo {
 
-    private val weatherAPI: WeatherAPI
+    private val weatherAPI: WeatherAPI = RetrofitService.cteateService(WeatherAPI::class.java)
 
-    init {
-        weatherAPI = RetrofitService.cteateService(WeatherAPI::class.java)
-    }
-
+    /**
+     * This method will fetch the API information using the API key and lat lon provided
+     */
     fun fetchWeather(lat: Double, lon: Double): LiveData<WeatherResponse> {
         val weatherResponseMutableLiveData = MutableLiveData<WeatherResponse>()
 
         val queryPath = QueryPath(API_KEY,lat,lon)
         if(checkInCache(lat,lon)){
-            //Applying to return the cache location
+            //Transformation applied to return the location from cache
             return Transformations.map(weatherResponseMutableLiveData, ::getFromCache)
         }
-
+        /**
+         * make network call to fetch weather in background thread
+         */
         weatherAPI.getResponse("weather", queryPath.lat, queryPath.lon, queryPath.appid)
             .enqueue(object : Callback<WeatherResponse> {
                 override fun onResponse(
@@ -53,12 +54,12 @@ class WeatherRepo {
         return weatherResponseMutableLiveData
     }
 
-    /*
+    /**
     get location from Cache
      */
     private fun getFromCache(weatherResponse: WeatherResponse) = AppCache.weatherResponse
 
-    /*
+    /**
     check in Cache
      */
     fun checkInCache(lat: Double, lon: Double): Boolean{
@@ -69,8 +70,6 @@ class WeatherRepo {
                 return true
             }
         }
-
-
         return  false
     }
 }

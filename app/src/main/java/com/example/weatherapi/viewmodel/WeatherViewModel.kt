@@ -10,6 +10,9 @@ class WeatherViewModel : BaseViewModel(){
 
     var liveDataWeather : MutableLiveData<WeatherResponse> = MutableLiveData()
 
+    /**
+     * fetch weather updates from Weather repo
+     */
     fun  fetchWeather(lat: Double, long: Double): LiveData<WeatherResponse> {
         liveDataWeather = weatherRepo.fetchWeather(lat, long) as MutableLiveData<WeatherResponse>
         return liveDataWeather

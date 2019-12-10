@@ -7,6 +7,9 @@ import android.location.Location
 import com.example.weatherapi.repository.WeatherRepo
 import com.example.weatherapi.util.AppCache
 
+/**
+ * This is job scheduler class which will fetch the weather updates for the location
+ */
 class WeatherService : JobService() {
 
     override fun onStartJob(params: JobParameters): Boolean {

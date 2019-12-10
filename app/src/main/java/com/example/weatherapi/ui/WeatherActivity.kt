@@ -1,14 +1,11 @@
 package com.example.weatherapi.ui
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
-import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -17,37 +14,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.weatherapi.models.WeatherResponse
 import com.example.weatherapi.util.AppCache
+import com.example.weatherapi.util.AppConstant.REQUEST_CHECK_SETTINGS
+import com.example.weatherapi.util.AppConstant.REQUEST_PERMISSIONS_REQUEST_CODE
 import com.example.weatherapi.util.Utils
 import com.example.weatherapi.viewmodel.WeatherViewModel
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import kotlinx.android.synthetic.main.activity_main.*
-import android.content.IntentSender
-import com.google.android.gms.common.api.ResolvableApiException
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
 
 
 class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
-    override fun onConnectionFailed(p0: ConnectionResult) {
 
-    }
 
-    override fun onConnectionSuspended(p0: Int) {
-    }
 
-    override fun onConnected(p0: Bundle?) {
-
-    }
-
-    private val REQUEST_CHECK_SETTINGS: Int = 38
     private lateinit  var model : WeatherViewModel
-    private val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+
     private val TAG : String = "WeatherActivity"
     private lateinit var mLocationRequest : LocationRequest
     private lateinit var googleApiClient :  GoogleApiClient
@@ -218,6 +202,17 @@ class WeatherActivity : AbstractActivity(),GoogleApiClient.ConnectionCallbacks, 
                 }
             }
         }
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+    }
+
+    override fun onConnected(p0: Bundle?) {
+
     }
 
 }

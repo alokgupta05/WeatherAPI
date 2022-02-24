@@ -8,7 +8,7 @@ Local cache to fetch location and and response
  */
 object AppCache {
 
-     var mUserCurrentLocation: Location? = null
+     var mUserCurrentLocation: Pair<Double,Double>? = null
      var weatherResponse : WeatherResponse = WeatherResponse()
 
 

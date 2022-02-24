@@ -6,7 +6,6 @@ import androidx.lifecycle.Transformations
 import com.example.weatherapi.util.AppCache
 import com.example.weatherapi.models.QueryPath
 
-import com.example.weatherapi.network.RetrofitService
 import com.example.weatherapi.models.WeatherResponse
 import com.example.weatherapi.util.AppConstant.API_KEY
 import com.example.weatherapi.network.WeatherAPI
@@ -14,10 +13,12 @@ import com.example.weatherapi.network.WeatherAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class WeatherRepo {
+class WeatherRepo @Inject constructor(
+    private val weatherAPI: WeatherAPI,
+) {
 
-    private val weatherAPI: WeatherAPI = RetrofitService.cteateService(WeatherAPI::class.java)
 
     /**
      * This method will fetch the API information using the API key and lat lon provided

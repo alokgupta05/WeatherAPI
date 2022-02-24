@@ -6,17 +6,18 @@ import android.location.Location
 
 import com.example.weatherapi.repository.WeatherRepo
 import com.example.weatherapi.util.AppCache
+import dagger.hilt.android.internal.lifecycle.HiltViewModelMap
+import javax.inject.Inject
 
 /**
  * This is job scheduler class which will fetch the weather updates for the location
  */
-class WeatherService : JobService() {
+class WeatherService @Inject constructor(private val weatherRepo: WeatherRepo): JobService() {
 
     override fun onStartJob(params: JobParameters): Boolean {
-        val weatherRepo = WeatherRepo()
         val location = AppCache.mUserCurrentLocation
         if (location != null) {
-            weatherRepo.fetchWeather(location.latitude, location.longitude)
+            weatherRepo.fetchWeather(location.first, location.second)
         }
         return true
     }
